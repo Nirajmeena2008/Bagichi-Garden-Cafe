@@ -7,7 +7,7 @@ export default function Reviews() {
   const [reviews, setReviews] = useState<Review[]>([]);
 
   useEffect(() => {
-    fetch("/api/reviews")
+    fetch("/reviews.json")
       .then((res) => res.json())
       .then((data) => setReviews(data))
       .catch((err) => console.error(err));

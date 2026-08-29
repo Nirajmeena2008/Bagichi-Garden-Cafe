@@ -11,31 +11,15 @@ export default function Booking() {
     const form = e.currentTarget;
     setIsSubmitting(true);
     
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-
-    try {
-      const res = await fetch("/api/bookings", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+    // Simulate API delay
+    setTimeout(() => {
+      setSuccessData({ 
+        reservationNumber: "BGC-DEMO123",
+        otp: "123456"
       });
-
-      if (res.ok) {
-        const responseData = await res.json();
-        setSuccessData({ 
-          reservationNumber: responseData.booking.reservationNumber,
-          otp: responseData.booking.otp
-        });
-        form.reset();
-      }
-    } catch (error) {
-      console.error("Booking failed:", error);
-    } finally {
+      form.reset();
       setIsSubmitting(false);
-    }
+    }, 1000);
   };
 
   return (

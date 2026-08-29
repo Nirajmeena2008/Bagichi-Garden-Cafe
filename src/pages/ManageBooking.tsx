@@ -14,7 +14,7 @@ export default function ManageBooking() {
   const [showMenu, setShowMenu] = useState(false);
   
   useEffect(() => {
-    fetch("/api/menu")
+    fetch("/menu.json")
       .then((res) => res.json())
       .then((data) => setMenuItems(data))
       .catch((err) => console.error(err));
@@ -26,17 +26,29 @@ export default function ManageBooking() {
     setLoading(true);
     setError("");
     
-    try {
-      const res = await fetch(`/api/bookings/${resNum.toUpperCase()}`);
-      if (!res.ok) throw new Error("Booking not found");
-      const data = await res.json();
-      setBooking(data);
-    } catch (err) {
-      setError("We couldn't find a booking with that number.");
-      setBooking(null);
-    } finally {
+    // Simulate API delay
+    setTimeout(() => {
+      if (resNum.toUpperCase() === "BGC-DEMO123") {
+        setBooking({
+          id: "fake-id-123",
+          reservationNumber: "BGC-DEMO123",
+          name: "Guest",
+          email: "guest@example.com",
+          phone: "+91 9876543210",
+          date: new Date().toISOString(),
+          time: "19:00",
+          guests: 2,
+          otp: "123456",
+          status: "PENDING",
+          createdAt: new Date().toISOString(),
+          preOrders: []
+        });
+      } else {
+        setError("We couldn't find a booking with that number.");
+        setBooking(null);
+      }
       setLoading(false);
-    }
+    }, 800);
   };
 
   useEffect(() => {
@@ -54,19 +66,8 @@ export default function ManageBooking() {
   const handleUpdate = async (updates: Partial<Reservation>) => {
     if (!booking) return;
     
-    try {
-      const res = await fetch(`/api/bookings/${booking.reservationNumber}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...booking, ...updates }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setBooking(data.booking);
-      }
-    } catch (err) {
-      console.error(err);
-    }
+    // Simulate API update locally
+    setBooking({ ...booking, ...updates });
   };
 
   const addPreOrder = (menuItem: MenuItem) => {
@@ -85,13 +86,7 @@ export default function ManageBooking() {
       newOrders = [...currentOrders, { menuItemId: menuItem.id, quantity: 1, menuItem }];
     }
     
-    // We send just the structure expected by the API
-    const preOrdersPayload = newOrders.map(o => ({
-      menuItemId: o.menuItemId,
-      quantity: o.quantity
-    }));
-    
-    handleUpdate({ preOrders: preOrdersPayload } as any);
+    handleUpdate({ preOrders: newOrders } as any);
   };
 
   const removePreOrder = (menuItemId: string) => {
@@ -99,12 +94,7 @@ export default function ManageBooking() {
     const currentOrders = booking.preOrders || [];
     const newOrders = currentOrders.filter(item => item.menuItemId !== menuItemId);
     
-    const preOrdersPayload = newOrders.map(o => ({
-      menuItemId: o.menuItemId,
-      quantity: o.quantity
-    }));
-    
-    handleUpdate({ preOrders: preOrdersPayload } as any);
+    handleUpdate({ preOrders: newOrders } as any);
   };
 
   return (

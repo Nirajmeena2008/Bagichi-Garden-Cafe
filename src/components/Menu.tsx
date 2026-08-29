@@ -8,7 +8,7 @@ export default function Menu() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/menu")
+    fetch("/menu.json")
       .then((res) => res.json())
       .then((data) => {
         setItems(data);
