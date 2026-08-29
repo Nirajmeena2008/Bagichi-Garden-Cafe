@@ -1,0 +1,6 @@
+{
+  "name": "The Bagichi Garden Cafe & Restaurant",
+  "description": "Professional restaurant website with booking and menu features.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
