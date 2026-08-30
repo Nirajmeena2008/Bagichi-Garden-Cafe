@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Calendar, Clock, Users, User, Phone, Mail } from "lucide-react";
+import { Calendar, Clock, Users, User, Phone, Mail, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 
 export default function Booking() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -11,176 +12,206 @@ export default function Booking() {
     const form = e.currentTarget;
     setIsSubmitting(true);
     
-    // Simulate API delay
+    // Simulate API delay & booking creation
     setTimeout(() => {
+      const generatedId = `BGC-${Math.floor(1000 + Math.random() * 9000)}`;
+      const generatedOtp = `${Math.floor(100000 + Math.random() * 900000)}`;
       setSuccessData({ 
-        reservationNumber: "BGC-DEMO123",
-        otp: "123456"
+        reservationNumber: generatedId,
+        otp: generatedOtp
       });
       form.reset();
       setIsSubmitting(false);
-    }, 1000);
+    }, 800);
   };
 
   return (
-    <section id="booking" className="py-24 relative bg-[#2D3326]">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(#C5A059 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+    <section id="booking" className="py-8 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full flex flex-col justify-center">
+      {/* Top Header */}
+      <div className="flex items-center justify-between gap-4 mb-6">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-white/60 hover:text-[#e8a33d] transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" /> Back to Home
+        </Link>
+        <Link
+          to="/manage"
+          className="text-xs uppercase tracking-widest text-[#e8a33d] hover:underline"
+        >
+          Already have a booking? →
+        </Link>
+      </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="bg-[#fdfdfb] rounded-3xl p-8 md:p-12 shadow-2xl border border-[#5A5A40]/10">
-          <div className="text-center mb-10 flex flex-col items-center">
-            <h2 className="text-xs uppercase tracking-[0.2em] font-bold text-[#5A5A40] mb-4">
-              Reservations
-            </h2>
-            <h3 className="text-3xl md:text-4xl font-serif text-[#141414] mb-4">
-              Reserve Your Table
-            </h3>
-            <div className="w-16 h-px bg-[#5A5A40]/30 mx-auto mb-4"></div>
-            <p className="text-[#5A5A40]/80 font-light max-w-lg">
-              Join us for an unforgettable dining experience under the stars.
-            </p>
-          </div>
+      <div className="bg-white/5 backdrop-blur-md rounded-3xl p-6 sm:p-10 shadow-2xl border border-white/10 relative overflow-hidden">
+        {/* Decorative background glow */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#e8a33d]/10 rounded-full blur-3xl pointer-events-none" />
 
+        <div className="text-center mb-8 flex flex-col items-center">
+          <h2 className="text-xs uppercase tracking-widest font-bold text-[#e8a33d] mb-2">
+            Outdoor Sanctuary Dining
+          </h2>
+          <h1 className="text-2xl sm:text-3xl font-serif text-white mb-2">
+            Reserve Your Table
+          </h1>
+          <p className="text-white/60 text-xs font-light max-w-md">
+            Join us for an exquisite dining experience under the Rajasthan sky.
+          </p>
+        </div>
+
+        <AnimatePresence mode="wait">
           {successData ? (
-            <div className="p-8 bg-[#5A5A40]/5 border border-[#5A5A40]/20 rounded-xl text-center space-y-4">
-              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto shadow-sm border border-[#5A5A40]/10 mb-4">
-                <Calendar className="w-8 h-8 text-[#C5A059]" />
+            <motion.div 
+              key="success"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="p-8 bg-black/40 border border-white/10 rounded-2xl text-center space-y-4"
+            >
+              <div className="w-14 h-14 bg-[#e8a33d]/20 border border-[#e8a33d]/30 rounded-full flex items-center justify-center mx-auto text-[#e8a33d]">
+                <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h4 className="text-2xl font-serif text-[#141414]">Reservation Confirmed</h4>
-              <p className="text-sm text-[#5A5A40]/80">We look forward to hosting you at The Bagichi.</p>
-              <div className="pt-4 pb-2">
-                <p className="text-[10px] uppercase tracking-widest text-[#5A5A40] font-bold mb-1">Your Reservation Number</p>
-                <div className="text-3xl font-mono tracking-widest text-[#141414] font-bold">{successData.reservationNumber}</div>
+              <h3 className="text-2xl font-serif text-white">Table Reserved Successfully!</h3>
+              <p className="text-xs text-white/70">Your booking request has been confirmed at The Bagichi.</p>
+              
+              <div className="bg-white/5 border border-white/10 rounded-xl p-4 my-4 max-w-sm mx-auto">
+                <div className="pb-3 border-b border-white/10">
+                  <p className="text-[10px] uppercase tracking-widest text-[#e8a33d] font-bold mb-1">Reservation Number</p>
+                  <div className="text-2xl font-mono tracking-widest text-white font-bold">{successData.reservationNumber}</div>
+                </div>
+                <div className="pt-3">
+                  <p className="text-[10px] uppercase tracking-widest text-[#e8a33d] font-bold mb-1">Management Passcode</p>
+                  <div className="text-lg font-mono tracking-widest text-white font-semibold">{successData.otp}</div>
+                </div>
               </div>
-              <div className="pb-2">
-                <p className="text-[10px] uppercase tracking-widest text-[#5A5A40] font-bold mb-1">Verification OTP</p>
-                <div className="text-xl font-mono tracking-widest text-[#141414] font-bold">{successData.otp}</div>
-              </div>
-              <p className="text-xs text-[#5A5A40]/60 italic mb-6">Please save these details to manage your booking later.</p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
                 <Link
                   to={`/manage?id=${successData.reservationNumber}`}
-                  className="px-6 py-3 rounded-full bg-[#141414] text-white text-xs uppercase tracking-widest font-bold hover:bg-[#5A5A40] transition-all"
+                  className="px-6 py-3 rounded-full bg-[#e8a33d] text-black text-xs uppercase tracking-widest font-bold hover:bg-[#f3b55c] transition-all"
                 >
-                  Manage this Booking
+                  Manage & Pre-Order Dishes
                 </Link>
                 <button 
                   onClick={() => setSuccessData(null)}
-                  className="text-xs uppercase tracking-widest font-bold text-[#5A5A40] hover:text-[#C5A059] transition-colors"
+                  className="px-6 py-3 rounded-full bg-white/10 text-white text-xs uppercase tracking-widest font-semibold hover:bg-white/20 transition-colors"
                 >
                   Book Another Table
                 </button>
               </div>
-            </div>
+            </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Name */}
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wider font-semibold text-[#5A5A40] flex items-center gap-2">
-                  <User className="w-4 h-4 text-[#5A5A40]/60" /> Full Name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  className="w-full px-4 py-3 rounded-xl border border-[#5A5A40]/20 focus:ring-1 focus:ring-[#5A5A40] focus:border-[#5A5A40] transition-all outline-none bg-white text-[#141414] text-sm"
-                  placeholder="John Doe"
-                />
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Name */}
+                <div className="space-y-1.5">
+                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center gap-1.5">
+                    <User className="w-3.5 h-3.5" /> Full Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-black/40 text-white text-sm"
+                    placeholder="E.g. Vikram Sharma"
+                  />
+                </div>
+
+                {/* Email */}
+                <div className="space-y-1.5">
+                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center gap-1.5">
+                    <Mail className="w-3.5 h-3.5" /> Email Address
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-black/40 text-white text-sm"
+                    placeholder="vikram@example.com"
+                  />
+                </div>
+
+                {/* Phone */}
+                <div className="space-y-1.5">
+                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center gap-1.5">
+                    <Phone className="w-3.5 h-3.5" /> Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    required
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-black/40 text-white text-sm"
+                    placeholder="+91 98765 43210"
+                  />
+                </div>
+
+                {/* Guests */}
+                <div className="space-y-1.5">
+                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center gap-1.5">
+                    <Users className="w-3.5 h-3.5" /> Number of Guests
+                  </label>
+                  <select
+                    name="guests"
+                    required
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-[#171412] text-white text-sm"
+                  >
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 10, 15, 20].map((num) => (
+                      <option key={num} value={num} className="bg-[#171412] text-white">
+                        {num} {num === 1 ? "Guest" : "Guests"}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Date */}
+                <div className="space-y-1.5">
+                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5" /> Date
+                  </label>
+                  <input
+                    type="date"
+                    name="date"
+                    required
+                    defaultValue={new Date().toISOString().split("T")[0]}
+                    min={new Date().toISOString().split("T")[0]}
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-black/40 text-white text-sm"
+                  />
+                </div>
+
+                {/* Time */}
+                <div className="space-y-1.5">
+                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5" /> Preferred Time
+                  </label>
+                  <input
+                    type="time"
+                    name="time"
+                    required
+                    defaultValue="19:30"
+                    min="11:00"
+                    max="23:00"
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-black/40 text-white text-sm"
+                  />
+                </div>
               </div>
 
-              {/* Email */}
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wider font-semibold text-[#5A5A40] flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-[#5A5A40]/60" /> Email Address
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  className="w-full px-4 py-3 rounded-xl border border-[#5A5A40]/20 focus:ring-1 focus:ring-[#5A5A40] focus:border-[#5A5A40] transition-all outline-none bg-white text-[#141414] text-sm"
-                  placeholder="john@example.com"
-                />
-              </div>
-
-              {/* Phone */}
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wider font-semibold text-[#5A5A40] flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-[#5A5A40]/60" /> Phone Number
-                </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  required
-                  className="w-full px-4 py-3 rounded-xl border border-[#5A5A40]/20 focus:ring-1 focus:ring-[#5A5A40] focus:border-[#5A5A40] transition-all outline-none bg-white text-[#141414] text-sm"
-                  placeholder="+91 98765 43210"
-                />
-              </div>
-
-              {/* Guests */}
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wider font-semibold text-[#5A5A40] flex items-center gap-2">
-                  <Users className="w-4 h-4 text-[#5A5A40]/60" /> Number of Guests
-                </label>
-                <select
-                  name="guests"
-                  required
-                  className="w-full px-4 py-3 rounded-xl border border-[#5A5A40]/20 focus:ring-1 focus:ring-[#5A5A40] focus:border-[#5A5A40] transition-all outline-none bg-white text-[#141414] text-sm"
-                >
-                  {[1, 2, 3, 4, 5, 6, 7, 8, "9+"].map((num) => (
-                    <option key={num} value={num === "9+" ? 10 : num}>
-                      {num} {num === 1 ? "Person" : "People"}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Date */}
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wider font-semibold text-[#5A5A40] flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-[#5A5A40]/60" /> Date
-                </label>
-                <input
-                  type="date"
-                  name="date"
-                  required
-                  min={new Date().toISOString().split("T")[0]}
-                  className="w-full px-4 py-3 rounded-xl border border-[#5A5A40]/20 focus:ring-1 focus:ring-[#5A5A40] focus:border-[#5A5A40] transition-all outline-none bg-white text-[#141414] text-sm"
-                />
-              </div>
-
-              {/* Time */}
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wider font-semibold text-[#5A5A40] flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-[#5A5A40]/60" /> Time
-                </label>
-                <input
-                  type="time"
-                  name="time"
-                  required
-                  min="11:00"
-                  max="23:00"
-                  className="w-full px-4 py-3 rounded-xl border border-[#5A5A40]/20 focus:ring-1 focus:ring-[#5A5A40] focus:border-[#5A5A40] transition-all outline-none bg-white text-[#141414] text-sm"
-                />
-                <p className="text-[10px] uppercase tracking-wider text-[#141414]/60 font-semibold">Open 11:00 AM - 11:00 PM</p>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-[#5A5A40] hover:bg-[#4a4a35] text-white text-xs uppercase tracking-widest font-bold py-4 rounded-xl transition-all shadow-lg shadow-[#5A5A40]/20 mt-8 flex justify-center items-center"
-            >
-              {isSubmitting ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
-              ) : (
-                "Confirm Reservation"
-              )}
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-[#e8a33d] hover:bg-[#f3b55c] text-black text-xs uppercase tracking-widest font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-[#e8a33d]/20 mt-4 flex justify-center items-center gap-2"
+              >
+                {isSubmitting ? (
+                  <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-black"></div>
+                ) : (
+                  <>
+                    <Calendar className="w-4 h-4" />
+                    Confirm Table Reservation
+                  </>
+                )}
+              </button>
+            </form>
           )}
-        </div>
+        </AnimatePresence>
       </div>
     </section>
   );

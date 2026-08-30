@@ -1,0 +1,103 @@
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 60;
+}
+.nav__inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: var(--nav-h);
+}
+.nav__brand {
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.nav__rail {
+  margin-inline: auto;
+  padding: 14px 30px;
+  border-radius: 999px;
+  background: var(--glass);
+  border: 1px solid var(--hairline);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  backdrop-filter: blur(18px) saturate(120%);
+}
+.nav__slot {
+  display: inline-flex;
+  align-items: center;
+}
+.nav__dot {
+  width: 3px;
+  height: 3px;
+  margin-inline: clamp(12px, 1.6vw, 22px);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.42);
+}
+.nav__rail a {
+  font-size: 14.5px;
+  font-weight: 400;
+  color: var(--ink-soft);
+  transition: color .3s var(--ease-out);
+}
+.nav__rail a:hover {
+  color: var(--ink);
+}
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.nav__lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.nav__lang:hover {
+  color: var(--ink);
+}
+.nav__search {
+  display: inline-flex;
+  color: var(--ink-soft);
+}
+.nav__search:hover {
+  color: var(--ink);
+}
+.nav__toggle {
+  display: none;
+  margin-left: auto;
+  padding: 8px;
+}
+
+@media (max-width: 1040px) {
+  .nav__rail, .nav__actions {
+    display: none;
+  }
+  .nav__toggle {
+    display: inline-flex;
+  }
+  .nav__sheet {
+    display: flex;
+    flex-direction: column;
+    margin: 0 var(--gutter);
+    padding: 10px 20px 20px;
+    border-radius: 22px;
+    background: rgba(14, 12, 10, 0.95);
+    border: 1px solid var(--hairline);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+  .nav__sheet a {
+    padding: 14px 4px;
+    font-size: 16px;
+    color: var(--ink-soft);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+  .nav__sheet a:last-child {
+    border-bottom: 0;
+  }
+}

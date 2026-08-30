@@ -1,51 +1,116 @@
-import { motion } from "motion/react";
-import { ArrowRight } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Star } from "./icons";
+import { Utensils, Calendar, MapPin, MessageSquare, ClipboardCheck, Sparkles } from "lucide-react";
+import "../styles/Hero.css";
 
 export default function Hero() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const play = video.play();
+    if (play?.catch) play.catch(() => {});
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      video.pause();
+      setReady(true);
+    }
+  }, []);
+
   return (
-    <section className="relative h-[90vh] min-h-[600px] flex items-center justify-center overflow-hidden">
-      <div 
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat bg-[#2D3326]"
-        style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=2070")' }}
-      >
-        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(#C5A059 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 60%, transparent 100%)' }}></div>
+    <section className="hero" id="top">
+      <div className="hero__media" aria-hidden="true">
+        <video 
+          ref={videoRef} 
+          className={`hero__video ${ready ? 'is-ready' : ''}`}
+          src="/hero.mp4" 
+          autoPlay 
+          muted 
+          loop 
+          playsInline 
+          preload="auto"
+          onCanPlay={() => setReady(true)} 
+        />
+        <div className="hero__scrim" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-16">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="max-w-3xl mx-auto"
-        >
-          <div className="flex items-center justify-center space-x-4 mb-6">
-            <div className="h-px w-12 bg-white/60"></div>
-            <span className="text-xs uppercase tracking-[0.3em] font-medium text-white">Amer, Rajasthan</span>
-            <div className="h-px w-12 bg-white/60"></div>
-          </div>
-          <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-6 leading-[1.1]">
-            Experience the magic of outdoor dining.
-          </h1>
-          <p className="text-lg md:text-xl text-white/80 mb-10 font-light max-w-2xl mx-auto leading-relaxed">
-            A lush green sanctuary on the Delhi-Jaipur highway, serving authentic North Indian and Continental delicacies under the stars.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a 
-              href="#booking"
-              className="w-full sm:w-auto bg-[#5A5A40] hover:bg-[#4a4a35] text-white px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-bold shadow-lg shadow-[#5A5A40]/20 transition-all flex items-center justify-center gap-2"
-            >
-              Book a Table
-              <ArrowRight className="h-4 w-4" />
-            </a>
-            <a 
-              href="#menu"
-              className="w-full sm:w-auto bg-white text-[#141414] hover:bg-stone-100 px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-bold shadow-lg transition-all"
-            >
-              View Menu
-            </a>
-          </div>
-        </motion.div>
+      <div className="hero__body shell">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md mb-6">
+          <Sparkles className="w-3.5 h-3.5 text-[#e8a33d]" />
+          <span className="text-[11px] font-medium tracking-widest uppercase text-white/90">
+            Delhi-Jaipur Highway Sanctuary
+          </span>
+        </div>
+
+        <h1 className="hero__title">
+          Experience the Magic<br />of Outdoor Dining
+        </h1>
+        <p className="hero__sub">
+          A lush green sanctuary on the Delhi-Jaipur highway, serving authentic North Indian delicacies and refreshing beverages under the starlit sky.
+        </p>
+
+        {/* Primary Action Buttons */}
+        <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
+          <Link to="/booking" className="btn hero__cta !mt-0 !bg-[#e8a33d] !text-black font-semibold hover:!bg-[#f5b863]">
+            <Calendar className="w-4 h-4 mr-2" />
+            Book a Table
+          </Link>
+          <Link to="/menu" className="btn hero__cta !mt-0 !bg-white/10 !text-white !border !border-white/20 hover:!bg-white/20 backdrop-blur-md">
+            <Utensils className="w-4 h-4 mr-2" />
+            Explore Menu
+          </Link>
+        </div>
+
+        {/* Secondary Quick Jump Sections Bar */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-10 max-w-3xl w-full">
+          <Link
+            to="/menu"
+            className="p-3.5 rounded-2xl bg-black/40 border border-white/10 hover:border-[#e8a33d]/50 backdrop-blur-md flex flex-col items-center text-center transition-all group hover:bg-black/60"
+          >
+            <Utensils className="w-5 h-5 text-[#e8a33d] mb-1.5 group-hover:scale-110 transition-transform" />
+            <span className="text-xs font-semibold text-white">Full Menu</span>
+            <span className="text-[10px] text-white/50">Specials & Drinks</span>
+          </Link>
+
+          <Link
+            to="/booking"
+            className="p-3.5 rounded-2xl bg-black/40 border border-white/10 hover:border-[#e8a33d]/50 backdrop-blur-md flex flex-col items-center text-center transition-all group hover:bg-black/60"
+          >
+            <Calendar className="w-5 h-5 text-[#e8a33d] mb-1.5 group-hover:scale-110 transition-transform" />
+            <span className="text-xs font-semibold text-white">Reservations</span>
+            <span className="text-[10px] text-white/50">Instant Confirmation</span>
+          </Link>
+
+          <Link
+            to="/reviews"
+            className="p-3.5 rounded-2xl bg-black/40 border border-white/10 hover:border-[#e8a33d]/50 backdrop-blur-md flex flex-col items-center text-center transition-all group hover:bg-black/60"
+          >
+            <MessageSquare className="w-5 h-5 text-[#e8a33d] mb-1.5 group-hover:scale-110 transition-transform" />
+            <span className="text-xs font-semibold text-white">Guest Reviews</span>
+            <span className="text-[10px] text-white/50">4.9 ★ Rating</span>
+          </Link>
+
+          <Link
+            to="/contact"
+            className="p-3.5 rounded-2xl bg-black/40 border border-white/10 hover:border-[#e8a33d]/50 backdrop-blur-md flex flex-col items-center text-center transition-all group hover:bg-black/60"
+          >
+            <MapPin className="w-5 h-5 text-[#e8a33d] mb-1.5 group-hover:scale-110 transition-transform" />
+            <span className="text-xs font-semibold text-white">Location</span>
+            <span className="text-[10px] text-white/50">Map & Hours</span>
+          </Link>
+        </div>
+      </div>
+
+      <div className="rating shell mt-8">
+        <span className="rating__count">1,040+ Google Reviews</span>
+        <ul className="rating__stars" aria-label="Rated 5 out of 5">
+          {Array.from({ length: 5 }, (_, i) => <li key={i}><Star /></li>)}
+        </ul>
+        <Link to="/reviews" className="rating__score hover:text-[#e8a33d] underline text-xs">
+          Read All Reviews →
+        </Link>
       </div>
     </section>
   );
