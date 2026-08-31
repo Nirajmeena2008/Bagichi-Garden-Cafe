@@ -5,7 +5,7 @@ import Hero from "../components/Hero";
 export default function Home() {
   return (
     <PageTransition>
-      <div className="min-h-screen bg-[#080706] text-white flex flex-col justify-between selection:bg-[#e8a33d]/30 selection:text-white">
+      <div className="min-h-screen w-full bg-[#080706] text-white flex flex-col items-center justify-between selection:bg-[#e8a33d]/30 selection:text-white">
         <Header />
         <Hero />
       </div>

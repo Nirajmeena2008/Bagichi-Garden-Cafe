@@ -28,34 +28,39 @@ export default function Booking() {
   return (
     <section id="booking" className="py-8 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full flex flex-col justify-center">
       {/* Top Header */}
-      <div className="flex items-center justify-between gap-4 mb-6">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-white/60 hover:text-[#e8a33d] transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" /> Back to Home
-        </Link>
-        <Link
-          to="/manage"
-          className="text-xs uppercase tracking-widest text-[#e8a33d] hover:underline"
-        >
-          Already have a booking? →
-        </Link>
+      <div className="flex flex-col items-center justify-center gap-6 mb-12 text-center">
+        <div>
+          <h2 className="text-xs uppercase tracking-[0.2em] font-bold text-[#e8a33d] mb-3">
+            Table Reservations
+          </h2>
+          <h1 className="text-3xl sm:text-4xl font-serif text-white mb-6">
+            Book Your Experience
+          </h1>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-xs uppercase tracking-widest text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back to Home
+          </Link>
+          <Link
+            to="/manage"
+            className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-white/10 border border-white/20 text-white text-xs font-bold uppercase tracking-wider hover:bg-white/20 transition-all shadow-lg"
+          >
+            Manage Booking →
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white/5 backdrop-blur-md rounded-3xl p-6 sm:p-10 shadow-2xl border border-white/10 relative overflow-hidden">
         {/* Decorative background glow */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#e8a33d]/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="text-center mb-8 flex flex-col items-center">
-          <h2 className="text-xs uppercase tracking-widest font-bold text-[#e8a33d] mb-2">
-            Outdoor Sanctuary Dining
-          </h2>
-          <h1 className="text-2xl sm:text-3xl font-serif text-white mb-2">
-            Reserve Your Table
-          </h1>
-          <p className="text-white/60 text-xs font-light max-w-md">
-            Join us for an exquisite dining experience under the Rajasthan sky.
+        <div className="text-center mb-12 flex flex-col items-center">
+          <p className="text-white/60 text-sm font-light max-w-md">
+            Join us for an exquisite outdoor dining experience under the starlit Rajasthan sky. Select your date and time below.
           </p>
         </div>
 
@@ -104,59 +109,59 @@ export default function Booking() {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Name */}
-                <div className="space-y-1.5">
-                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center gap-1.5">
+                <div className="space-y-1.5 flex flex-col items-center">
+                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center justify-center gap-1.5">
                     <User className="w-3.5 h-3.5" /> Full Name
                   </label>
                   <input
                     type="text"
                     name="name"
                     required
-                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-black/40 text-white text-sm"
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-black/40 text-white text-sm text-center"
                     placeholder="E.g. Vikram Sharma"
                   />
                 </div>
 
                 {/* Email */}
-                <div className="space-y-1.5">
-                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center gap-1.5">
+                <div className="space-y-1.5 flex flex-col items-center">
+                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center justify-center gap-1.5">
                     <Mail className="w-3.5 h-3.5" /> Email Address
                   </label>
                   <input
                     type="email"
                     name="email"
                     required
-                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-black/40 text-white text-sm"
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-black/40 text-white text-sm text-center"
                     placeholder="vikram@example.com"
                   />
                 </div>
 
                 {/* Phone */}
-                <div className="space-y-1.5">
-                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center gap-1.5">
+                <div className="space-y-1.5 flex flex-col items-center">
+                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center justify-center gap-1.5">
                     <Phone className="w-3.5 h-3.5" /> Phone Number
                   </label>
                   <input
                     type="tel"
                     name="phone"
                     required
-                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-black/40 text-white text-sm"
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-black/40 text-white text-sm text-center"
                     placeholder="+91 98765 43210"
                   />
                 </div>
 
                 {/* Guests */}
-                <div className="space-y-1.5">
-                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center gap-1.5">
+                <div className="space-y-1.5 flex flex-col items-center">
+                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center justify-center gap-1.5">
                     <Users className="w-3.5 h-3.5" /> Number of Guests
                   </label>
                   <select
                     name="guests"
                     required
-                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-[#171412] text-white text-sm"
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-[#171412] text-white text-sm text-center"
                   >
                     {[1, 2, 3, 4, 5, 6, 7, 8, 10, 15, 20].map((num) => (
-                      <option key={num} value={num} className="bg-[#171412] text-white">
+                      <option key={num} value={num} className="bg-[#171412] text-white text-center">
                         {num} {num === 1 ? "Guest" : "Guests"}
                       </option>
                     ))}
@@ -164,8 +169,8 @@ export default function Booking() {
                 </div>
 
                 {/* Date */}
-                <div className="space-y-1.5">
-                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center gap-1.5">
+                <div className="space-y-1.5 flex flex-col items-center">
+                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center justify-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5" /> Date
                   </label>
                   <input
@@ -174,13 +179,13 @@ export default function Booking() {
                     required
                     defaultValue={new Date().toISOString().split("T")[0]}
                     min={new Date().toISOString().split("T")[0]}
-                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-black/40 text-white text-sm"
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-black/40 text-white text-sm text-center"
                   />
                 </div>
 
                 {/* Time */}
-                <div className="space-y-1.5">
-                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center gap-1.5">
+                <div className="space-y-1.5 flex flex-col items-center">
+                  <label className="text-xs uppercase tracking-wider font-semibold text-[#e8a33d] flex items-center justify-center gap-1.5">
                     <Clock className="w-3.5 h-3.5" /> Preferred Time
                   </label>
                   <input
@@ -190,7 +195,7 @@ export default function Booking() {
                     defaultValue="19:30"
                     min="11:00"
                     max="23:00"
-                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-black/40 text-white text-sm"
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 focus:ring-1 focus:ring-[#e8a33d] focus:border-[#e8a33d] transition-all outline-none bg-black/40 text-white text-sm text-center"
                   />
                 </div>
               </div>

@@ -6,10 +6,12 @@ import BookingPage from "./pages/BookingPage";
 import ReviewsPage from "./pages/ReviewsPage";
 import ContactPage from "./pages/ContactPage";
 import ManageBooking from "./pages/ManageBooking";
+import VoiceAgent from "./components/VoiceAgent";
+import CursorParticles from "./components/CursorParticles";
+import BackgroundRipples from "./components/BackgroundRipples";
 
 function AnimatedRoutes() {
   const location = useLocation();
-
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
@@ -29,7 +31,10 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
+      <BackgroundRipples />
+      <CursorParticles />
       <AnimatedRoutes />
+      <VoiceAgent />
     </BrowserRouter>
   );
 }

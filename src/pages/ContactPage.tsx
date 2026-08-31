@@ -7,42 +7,45 @@ import Footer from "../components/Footer";
 export default function ContactPage() {
   return (
     <PageTransition>
-      <div className="min-h-screen bg-[#080706] text-white flex flex-col justify-between selection:bg-[#e8a33d]/30 selection:text-white pt-24">
+      <div className="min-h-screen w-full bg-[#080706] text-white flex flex-col items-center justify-between selection:bg-[#e8a33d]/30 selection:text-white pt-24">
         <Header />
         
         <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
-            <Link
-              to="/"
-              className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-white/60 hover:text-[#e8a33d] transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" /> Back to Home
-            </Link>
-            <div className="text-center">
-              <h2 className="text-xs uppercase tracking-[0.2em] font-bold text-[#e8a33d] mb-1">
+          <div className="flex flex-col items-center justify-center gap-6 mb-14 text-center">
+            <div>
+              <h2 className="text-xs uppercase tracking-[0.2em] font-bold text-[#e8a33d] mb-3">
                 Find Us on Delhi-Jaipur Highway
               </h2>
-              <h1 className="text-3xl sm:text-4xl font-serif text-white">
+              <h1 className="text-3xl sm:text-4xl font-serif text-white mb-6">
                 Location & Contact
               </h1>
             </div>
-            <Link
-              to="/booking"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#e8a33d] text-black text-xs font-bold uppercase tracking-wider hover:bg-[#f3b55c] transition-all"
-            >
-              <Calendar className="w-3.5 h-3.5" /> Book Table
-            </Link>
+
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <Link
+                to="/"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-xs uppercase tracking-widest text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" /> Back to Home
+              </Link>
+              <Link
+                to="/booking"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-[#e8a33d] text-black text-xs font-bold uppercase tracking-wider hover:bg-[#f3b55c] transition-all shadow-lg shadow-[#e8a33d]/15"
+              >
+                <Calendar className="w-4 h-4" /> Book Table
+              </Link>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
             {/* Contact Details Card */}
             <div className="lg:col-span-5 space-y-6">
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md space-y-6">
-                <div>
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md space-y-6 flex flex-col items-center text-center">
+                <div className="flex flex-col items-center">
                   <h3 className="text-xs uppercase tracking-[0.2em] font-bold text-[#e8a33d] mb-3">Address & Route</h3>
-                  <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-[#e8a33d] mt-1 flex-shrink-0" />
+                  <div className="flex flex-col items-center gap-3">
+                    <MapPin className="w-5 h-5 text-[#e8a33d] flex-shrink-0" />
                     <div>
                       <p className="text-sm text-white font-medium leading-relaxed">
                         NH248, Near Bhanpur Mode, Village Gunawata, Amer, Kukas, Rajasthan 302038
@@ -51,7 +54,7 @@ export default function ContactPage() {
                         href="https://maps.app.goo.gl/uMgo4BpBVjxm4HrWA"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 mt-3 px-4 py-2 rounded-xl bg-white/10 text-white text-xs font-semibold hover:bg-white/20 transition-all border border-white/15"
+                        className="inline-flex items-center justify-center gap-1.5 mt-3 px-4 py-2 rounded-xl bg-white/10 text-white text-xs font-semibold hover:bg-white/20 transition-all border border-white/15"
                       >
                         <Navigation className="w-3.5 h-3.5 text-[#e8a33d]" /> Open in Google Maps
                       </a>
@@ -59,28 +62,28 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-white/10">
+                <div className="pt-4 border-t border-white/10 w-full flex flex-col items-center">
                   <h3 className="text-xs uppercase tracking-[0.2em] font-bold text-[#e8a33d] mb-3">Reservations & Inquiries</h3>
-                  <div className="space-y-3">
+                  <div className="space-y-3 flex flex-col items-center">
                     <a
                       href="tel:+919772370490"
-                      className="flex items-center gap-3 text-sm text-white/90 hover:text-[#e8a33d] transition-colors"
+                      className="flex flex-col items-center justify-center gap-1.5 text-sm text-white/90 hover:text-[#e8a33d] transition-colors"
                     >
                       <Phone className="w-4 h-4 text-[#e8a33d]" /> +91 97723 70490
                     </a>
                     <a
                       href="mailto:hello@thebagichi.com"
-                      className="flex items-center gap-3 text-sm text-white/90 hover:text-[#e8a33d] transition-colors"
+                      className="flex flex-col items-center justify-center gap-1.5 text-sm text-white/90 hover:text-[#e8a33d] transition-colors"
                     >
                       <Mail className="w-4 h-4 text-[#e8a33d]" /> hello@thebagichi.com
                     </a>
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-white/10">
+                <div className="pt-4 border-t border-white/10 w-full flex flex-col items-center">
                   <h3 className="text-xs uppercase tracking-[0.2em] font-bold text-[#e8a33d] mb-3">Operating Hours</h3>
-                  <div className="flex items-start gap-3">
-                    <Clock className="w-4 h-4 text-[#e8a33d] mt-0.5 flex-shrink-0" />
+                  <div className="flex flex-col items-center gap-3">
+                    <Clock className="w-4 h-4 text-[#e8a33d] flex-shrink-0" />
                     <div>
                       <p className="text-sm text-white font-medium">Monday to Sunday: 11:00 AM – 11:00 PM</p>
                       <p className="text-xs text-white/60 mt-0.5">Serving lunch, high tea, bonfire dinner & live grills.</p>
@@ -88,7 +91,7 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+                <div className="pt-4 border-t border-white/10 w-full flex flex-col items-center justify-center gap-3">
                   <span className="text-xs text-white/60">Follow Us:</span>
                   <div className="flex gap-2">
                     <a

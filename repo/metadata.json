@@ -1,0 +1,10 @@
+{
+  "name": "The Bagichi AI Receptionist",
+  "description": "An AI calling assistant for The Bagichi - Outdoor Garden Dining & Cafe.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

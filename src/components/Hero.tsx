@@ -20,7 +20,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="hero" id="top">
+    <section className="hero w-full" id="top">
       <div className="hero__media" aria-hidden="true">
         <video 
           ref={videoRef} 
@@ -36,28 +36,28 @@ export default function Hero() {
         <div className="hero__scrim" />
       </div>
 
-      <div className="hero__body shell">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md mb-6">
+      <div className="hero__body shell text-center flex flex-col items-center">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md mb-8">
           <Sparkles className="w-3.5 h-3.5 text-[#e8a33d]" />
           <span className="text-[11px] font-medium tracking-widest uppercase text-white/90">
             Delhi-Jaipur Highway Sanctuary
           </span>
         </div>
 
-        <h1 className="hero__title">
+        <h1 className="hero__title text-center mx-auto">
           Experience the Magic<br />of Outdoor Dining
         </h1>
-        <p className="hero__sub">
+        <p className="hero__sub text-center mx-auto mt-6">
           A lush green sanctuary on the Delhi-Jaipur highway, serving authentic North Indian delicacies and refreshing beverages under the starlit sky.
         </p>
 
         {/* Primary Action Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
-          <Link to="/booking" className="btn hero__cta !mt-0 !bg-[#e8a33d] !text-black font-semibold hover:!bg-[#f5b863]">
+        <div className="flex flex-wrap items-center justify-center gap-6 mt-14">
+          <Link to="/booking" className="btn hero__cta !mt-0 !bg-[#e8a33d] !text-black font-semibold hover:!bg-[#f5b863] px-8 py-4">
             <Calendar className="w-4 h-4 mr-2" />
             Book a Table
           </Link>
-          <Link to="/menu" className="btn hero__cta !mt-0 !bg-white/10 !text-white !border !border-white/20 hover:!bg-white/20 backdrop-blur-md">
+          <Link to="/menu" className="btn hero__cta !mt-0 !bg-white/10 !text-white !border !border-white/20 hover:!bg-white/20 backdrop-blur-md px-8 py-4">
             <Utensils className="w-4 h-4 mr-2" />
             Explore Menu
           </Link>
