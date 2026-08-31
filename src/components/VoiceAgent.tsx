@@ -27,7 +27,8 @@ export default function VoiceAgent() {
 
       // Determine websocket URL (secure or not depending on protocol)
       const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-      const wsUrl = `${protocol}//${window.location.host}/live`;
+      const backendUrl = import.meta.env.VITE_WS_BACKEND_URL;
+      const wsUrl = backendUrl ? `${backendUrl}/live` : `${protocol}//${window.location.host}/live`;
       const ws = new WebSocket(wsUrl);
       wsRef.current = ws;
 

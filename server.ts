@@ -3,6 +3,7 @@ import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
+import cors from 'cors';
 import { GoogleGenAI, LiveServerMessage, Modality } from '@google/genai';
 import dotenv from 'dotenv';
 
@@ -19,6 +20,7 @@ const ai = new GoogleGenAI({
 
 async function startServer() {
   const app = express();
+  app.use(cors());
   const PORT = 3000;
   const server = createServer(app);
   
