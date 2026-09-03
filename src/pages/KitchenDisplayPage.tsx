@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import KitchenDisplaySystem from '../components/KitchenDisplaySystem';
 import PageTransition from '../components/PageTransition';
 import { ArrowLeft, ChefHat, ShieldCheck, Home } from 'lucide-react';
+import { cafeConfig } from '../data/cafeConfig';
 
 export default function KitchenDisplayPage() {
   return (
@@ -16,7 +17,7 @@ export default function KitchenDisplayPage() {
             </div>
             <div>
               <h1 className="font-serif font-bold text-base text-white tracking-wide">
-                The Bagichi • Live Kitchen Display (KDS)
+                {cafeConfig.name} • Live Kitchen Display (KDS)
               </h1>
               <p className="text-[10px] text-white/50">Kitchen Order Station • Real-Time Website Orders & KOT Stream</p>
             </div>

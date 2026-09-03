@@ -17,6 +17,7 @@ import {
   getDocs
 } from 'firebase/firestore';
 import { useNavigate, Link } from 'react-router-dom';
+import { cafeConfig } from '../data/cafeConfig';
 import { 
   LogOut, 
   CalendarDays, 
@@ -892,11 +893,11 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link to="/" className="w-10 h-10 bg-[#e8a33d] rounded-xl flex items-center justify-center font-bold text-black text-xl hover:scale-105 transition-transform shadow-lg shadow-[#e8a33d]/20">
-              B
+              {cafeConfig.branding.logoLetter}
             </Link>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-lg sm:text-xl font-bold tracking-tight text-white">The Bagichi Admin</h1>
+                <h1 className="text-lg sm:text-xl font-bold tracking-tight text-white">{cafeConfig.shortName} Admin</h1>
                 <span className="bg-[#e8a33d]/15 text-[#e8a33d] text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border border-[#e8a33d]/30">
                   Live Portal
                 </span>

@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
+import { ShoppingBag } from "lucide-react";
 import { Chevron, MenuIcon, SearchIcon } from "./icons";
+import { cafeConfig } from "../data/cafeConfig";
 import "../styles/Navbar.css";
 
 export default function Header() {
@@ -58,16 +60,10 @@ export default function Header() {
     <header className="nav">
       <div className="nav__inner shell">
         <Link to="/" className="nav__brand flex items-center gap-2">
-          <img 
-            src="/instagram-logo.png" 
-            alt="The Bagichi Logo" 
-            className="w-8 h-8 rounded-full object-cover"
-            onError={(e) => {
-              const target = e.currentTarget;
-              target.style.display = 'none';
-            }}
-          />
-          The Bagichi
+          <div className="w-8 h-8 rounded-full bg-[#e8a33d] flex items-center justify-center text-stone-900 font-bold text-sm shadow-sm overflow-hidden">
+            {cafeConfig.branding.logoLetter}
+          </div>
+          <span>{cafeConfig.name}</span>
         </Link>
 
         <nav className="nav__rail" aria-label="Primary">
@@ -92,7 +88,14 @@ export default function Header() {
           })}
         </nav>
 
-        <div className="nav__actions">
+        <div className="nav__actions flex items-center gap-2">
+          <Link
+            to="/order"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-white text-xs font-semibold transition-all"
+          >
+            <ShoppingBag className="w-3.5 h-3.5 text-[#e8a33d]" />
+            <span>Order Online</span>
+          </Link>
           <Link
             to="/booking"
             className="hidden lg:inline-flex items-center px-4 py-2 rounded-full bg-[#e8a33d] text-black text-xs font-bold uppercase tracking-wider hover:bg-[#f3b55c] transition-all"

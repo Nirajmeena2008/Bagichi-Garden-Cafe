@@ -10,6 +10,7 @@ import {
   getStoredDriveToken 
 } from "../lib/googleDrive";
 import { soundManager } from "../lib/soundAlert";
+import { cafeConfig } from "../data/cafeConfig";
 
 export default function Booking() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -163,7 +164,7 @@ export default function Booking() {
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <h3 className="text-2xl font-serif text-white">Table Reserved Successfully!</h3>
-              <p className="text-xs text-white/70">Your booking request has been confirmed at The Bagichi.</p>
+              <p className="text-xs text-white/70">Your booking request has been confirmed at {cafeConfig.name}.</p>
               
               <div className="bg-white/5 border border-white/10 rounded-xl p-4 my-4 max-w-sm mx-auto">
                 <div className="pb-3 border-b border-white/10">
@@ -414,7 +415,7 @@ export default function Booking() {
               </div>
 
               <div className="px-6 py-3 bg-[#171412] border-t border-white/10 flex items-center justify-between text-xs text-white/50">
-                <span>Stored directly in The Bagichi Google Drive Database</span>
+                <span>Stored directly in {cafeConfig.shortName} Google Drive Database</span>
                 <button
                   onClick={() => setShowReceiptModal(false)}
                   className="px-4 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors"

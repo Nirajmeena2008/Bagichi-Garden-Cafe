@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Mail, Loader2, ArrowRight } from 'lucide-react';
+import { cafeConfig } from '../data/cafeConfig';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -42,7 +43,7 @@ export default function AdminLogin() {
             <Lock className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-[#f4f2ee]">Admin Portal</h1>
-          <p className="text-[#f4f2ee]/60 mt-2">Sign in to manage The Bagichi</p>
+          <p className="text-[#f4f2ee]/60 mt-2">Sign in to manage {cafeConfig.name}</p>
         </div>
 
         {error && (

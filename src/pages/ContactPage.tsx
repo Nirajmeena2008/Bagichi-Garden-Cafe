@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PageTransition from "../components/PageTransition";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { cafeConfig } from "../data/cafeConfig";
 
 export default function ContactPage() {
   return (
@@ -15,7 +16,7 @@ export default function ContactPage() {
           <div className="flex flex-col items-center justify-center gap-6 mb-14 text-center">
             <div>
               <h2 className="text-xs uppercase tracking-[0.2em] font-bold text-[#e8a33d] mb-3">
-                Find Us on Delhi-Jaipur Highway
+                {cafeConfig.tagline}
               </h2>
               <h1 className="text-3xl sm:text-4xl font-serif text-white mb-6">
                 Location & Contact
@@ -48,10 +49,10 @@ export default function ContactPage() {
                     <MapPin className="w-5 h-5 text-[#e8a33d] flex-shrink-0" />
                     <div>
                       <p className="text-sm text-white font-medium leading-[2.2]">
-                        NH248, Near Bhanpur Mode, Village Gunawata, Amer, Kukas, Rajasthan 302038
+                        {cafeConfig.contact.address.full}
                       </p>
                       <a
-                        href="https://maps.app.goo.gl/uMgo4BpBVjxm4HrWA"
+                        href={cafeConfig.contact.googleMapsUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center justify-center gap-1.5 mt-3 px-4 py-2 rounded-xl bg-white/10 text-white text-xs font-semibold hover:bg-white/20 transition-all border border-white/15"
@@ -66,16 +67,16 @@ export default function ContactPage() {
                   <h3 className="text-xs uppercase tracking-[0.2em] font-bold text-[#e8a33d] mb-3">Reservations & Inquiries</h3>
                   <div className="space-y-3 flex flex-col items-center">
                     <a
-                      href="tel:+919772370490"
+                      href={`tel:${cafeConfig.contact.phoneRaw}`}
                       className="flex flex-col items-center justify-center gap-1.5 text-sm text-white/90 hover:text-[#e8a33d] transition-colors"
                     >
-                      <Phone className="w-4 h-4 text-[#e8a33d]" /> +91 97723 70490
+                      <Phone className="w-4 h-4 text-[#e8a33d]" /> {cafeConfig.contact.phone}
                     </a>
                     <a
-                      href="mailto:hello@thebagichi.com"
+                      href={`mailto:${cafeConfig.contact.email}`}
                       className="flex flex-col items-center justify-center gap-1.5 text-sm text-white/90 hover:text-[#e8a33d] transition-colors"
                     >
-                      <Mail className="w-4 h-4 text-[#e8a33d]" /> hello@thebagichi.com
+                      <Mail className="w-4 h-4 text-[#e8a33d]" /> {cafeConfig.contact.email}
                     </a>
                   </div>
                 </div>
@@ -85,8 +86,8 @@ export default function ContactPage() {
                   <div className="flex flex-col items-center gap-3">
                     <Clock className="w-4 h-4 text-[#e8a33d] flex-shrink-0" />
                     <div>
-                      <p className="text-sm text-white font-medium">Monday to Sunday: 11:00 AM – 11:00 PM</p>
-                      <p className="text-xs text-white/60 mt-0.5">Serving lunch, high tea, bonfire dinner & live grills.</p>
+                      <p className="text-sm text-white font-medium">{cafeConfig.timings.daysOpen}: {cafeConfig.timings.openingHours}</p>
+                      <p className="text-xs text-white/60 mt-0.5">Serving lunch, artisanal coolers, bonfire dinner & live grills.</p>
                     </div>
                   </div>
                 </div>
@@ -95,34 +96,38 @@ export default function ContactPage() {
                   <span className="text-xs text-white/60">Follow Us:</span>
                   <div className="flex gap-2">
                     <a
-                      href="https://www.instagram.com/the_bagichi?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw=="
+                      href={cafeConfig.social.instagramUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 rounded-lg bg-white/10 hover:bg-[#e8a33d] hover:text-black transition-colors"
+                      aria-label="Instagram"
                     >
                       <ImageIcon className="w-4 h-4" />
                     </a>
-                    <a
-                      href="https://www.facebook.com/thebagichi"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 rounded-lg bg-white/10 hover:bg-[#e8a33d] hover:text-black transition-colors"
-                    >
-                      <Users className="w-4 h-4" />
-                    </a>
+                    {cafeConfig.social.facebook && (
+                      <a
+                        href={cafeConfig.social.facebook}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-lg bg-white/10 hover:bg-[#e8a33d] hover:text-black transition-colors"
+                        aria-label="Facebook"
+                      >
+                        <Users className="w-4 h-4" />
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
 
-              {/* Highway Perks */}
+              {/* Highway / Venue Perks */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 text-center">
                   <div className="text-[#e8a33d] font-bold text-xs uppercase mb-1">Ample Parking</div>
-                  <div className="text-[11px] text-white/60">Dedicated spaces for cars & buses</div>
+                  <div className="text-[11px] text-white/60">Dedicated spaces for cars & bikes</div>
                 </div>
                 <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 text-center">
                   <div className="text-[#e8a33d] font-bold text-xs uppercase mb-1">Garden Seating</div>
-                  <div className="text-[11px] text-white/60">Lush lawn tables under the stars</div>
+                  <div className="text-[11px] text-white/60">Lush lawn tables under open sky</div>
                 </div>
               </div>
             </div>
@@ -130,8 +135,8 @@ export default function ContactPage() {
             {/* Map Frame */}
             <div className="lg:col-span-7 h-[420px] lg:h-auto min-h-[380px] rounded-2xl overflow-hidden border border-white/15 shadow-2xl relative">
               <iframe
-                title="The Bagichi Google Map Location"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14217.152433022511!2d75.9314917!3d27.0805742!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjfCsDA0JzUwLjEiTiA3NcKwNTYnMjQuOSJF!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
+                title={`${cafeConfig.name} Google Map Location`}
+                src={cafeConfig.contact.googleMapsEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d113824.71764359051!2d75.7538!3d26.9124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDU0JzQ0LjYiTiA3NcKwNDUnMTMuNyJF!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

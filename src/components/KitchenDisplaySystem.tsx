@@ -18,6 +18,7 @@ import {
   createSimulatedZomatoOrder,
   SAMPLE_ZOMATO_ORDERS
 } from '../lib/zomatoService';
+import { cafeConfig } from '../data/cafeConfig';
 import { soundManager } from '../lib/soundAlert';
 import { saveKotPdfToGoogleDrive, downloadKotPdfLocally } from '../lib/kotPdfService';
 import { getStoredDriveToken, initiateDriveAuth } from '../lib/googleDrive';
@@ -284,7 +285,7 @@ export default function KitchenDisplaySystem({ isAdminView = false }: Props) {
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-lg sm:text-xl font-bold text-white tracking-wide">
-                  The Bagichi Kitchen Display (KDS) & POS
+                  {cafeConfig.name} • Kitchen Display (KDS) & POS
                 </h2>
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 animate-pulse">
                   ● Live Kitchen Feed
@@ -831,7 +832,7 @@ export default function KitchenDisplaySystem({ isAdminView = false }: Props) {
               </div>
 
               <p className="text-xs text-white/70 leading-relaxed">
-                Click any preset below to generate an incoming food order into The Bagichi kitchen. This instantly triggers the alert sound, registers the ticket on the KDS, and formats the printable 80mm KOT slip:
+                Click any preset below to generate an incoming food order into {cafeConfig.shortName} kitchen. This instantly triggers the alert sound, registers the ticket on the KDS, and formats the printable 80mm KOT slip:
               </p>
 
               <div className="space-y-3">

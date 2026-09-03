@@ -23,6 +23,7 @@ import {
   Search,
   Check
 } from "lucide-react";
+import { cafeConfig } from "../data/cafeConfig";
 import { MenuItem, RestaurantOrder } from "../types";
 import { db } from "../lib/firebase";
 import { collection, onSnapshot, query, orderBy, doc } from "firebase/firestore";
@@ -868,7 +869,7 @@ export default function OnlineOrderSection({ isEmbedded = false }: { isEmbedded?
                 </div>
                 <h3 className="text-xl font-extrabold text-white">Order Placed Successfully!</h3>
                 <p className="text-xs text-white/60 mt-1">
-                  Your order is received and sent to The Bagichi kitchen.
+                  Your order is received and sent to {cafeConfig.name} kitchen.
                 </p>
               </div>
 

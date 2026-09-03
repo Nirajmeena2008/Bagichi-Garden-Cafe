@@ -3,6 +3,7 @@ import { Phone, PhoneOff, Loader2, CalendarCheck, Utensils, CheckCircle2, Sparkl
 import { motion, AnimatePresence } from 'motion/react';
 import { pcmToBase64, base64ToPcm } from '../lib/audioUtils';
 import { soundManager } from '../lib/soundAlert';
+import { cafeConfig } from '../data/cafeConfig';
 
 interface ConfirmedReservation {
   id: string;
@@ -267,21 +268,11 @@ export default function VoiceAgent() {
             <div className="z-10 flex flex-col items-center max-w-md w-full">
               {/* Branding */}
               <div className="text-center mb-6 flex flex-col items-center">
-                <div className="w-14 h-14 bg-[#e8a33d] rounded-2xl flex items-center justify-center mb-3 shadow-md border border-[#e8a33d]/30 overflow-hidden">
-                  <img 
-                    src="/instagram-logo.png" 
-                    alt="The Bagichi Logo" 
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      const target = e.currentTarget;
-                      target.style.display = 'none';
-                      target.nextElementSibling?.classList.remove('hidden');
-                    }}
-                  />
-                  <span className="text-white font-bold text-2xl hidden">B</span>
+                <div className="w-14 h-14 bg-[#e8a33d] rounded-2xl flex items-center justify-center mb-3 shadow-md border border-[#e8a33d]/30 overflow-hidden text-stone-900 font-bold text-2xl">
+                  {cafeConfig.branding.logoLetter}
                 </div>
-                <h1 className="text-2xl font-bold text-[#f4f2ee] tracking-tight mb-0.5">The Bagichi Garden</h1>
-                <p className="text-[#e8a33d] font-semibold tracking-wider text-[11px] uppercase">AI Receptionist Aria</p>
+                <h1 className="text-2xl font-bold text-[#f4f2ee] tracking-tight mb-0.5">{cafeConfig.name}</h1>
+                <p className="text-[#e8a33d] font-semibold tracking-wider text-[11px] uppercase">AI Receptionist {cafeConfig.branding.aiAgentName}</p>
                 
                 <div className="mt-2.5 inline-flex items-center gap-2 px-3 py-1 bg-[#171412] rounded-full border border-[#e8a33d]/20 text-xs font-medium text-[#f4f2ee]/80">
                   <span className={`w-2 h-2 rounded-full ${status === 'connected' ? 'bg-emerald-400 animate-pulse' : status === 'connecting' ? 'bg-amber-400 animate-ping' : 'bg-[#e8a33d]'}`} />
