@@ -5,8 +5,17 @@
   --font-serif: 'Playfair Display', "Georgia", ui-serif, serif;
 }
 
-html {
+html, body {
   background-color: #080706;
   color: #f4f2ee;
+  letter-spacing: 0.015em;
+  line-height: 2;
+  font-size: 18px;
+}
+
+@layer base {
+  p {
+    @apply leading-[2.2];
+  }
 }
 

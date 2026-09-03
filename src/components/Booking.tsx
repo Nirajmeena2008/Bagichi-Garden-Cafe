@@ -1,28 +1,114 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Calendar, Clock, Users, User, Phone, Mail, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { Calendar, Clock, Users, User, Phone, Mail, ArrowLeft, CheckCircle2, FileText, HardDrive, Download, Copy, Check, X, ExternalLink } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { db } from "../lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { 
+  formatBookingReceiptText, 
+  syncSingleBookingToDrive, 
+  getStoredDriveToken 
+} from "../lib/googleDrive";
+import { soundManager } from "../lib/soundAlert";
 
 export default function Booking() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [successData, setSuccessData] = useState<{ reservationNumber: string, otp: string } | null>(null);
+  const [successData, setSuccessData] = useState<{ 
+    reservationNumber: string; 
+    otp: string;
+    receiptText?: string;
+    driveLink?: string;
+    isDriveSynced?: boolean;
+  } | null>(null);
+  const [showReceiptModal, setShowReceiptModal] = useState(false);
+  const [copiedReceipt, setCopiedReceipt] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
+    const formData = new FormData(form);
     setIsSubmitting(true);
     
-    // Simulate API delay & booking creation
-    setTimeout(() => {
-      const generatedId = `BGC-${Math.floor(1000 + Math.random() * 9000)}`;
-      const generatedOtp = `${Math.floor(100000 + Math.random() * 900000)}`;
-      setSuccessData({ 
-        reservationNumber: generatedId,
-        otp: generatedOtp
-      });
-      form.reset();
-      setIsSubmitting(false);
-    }, 800);
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+    const guests = Number(formData.get("guests") || 2);
+    const date = formData.get("date") as string;
+    const time = formData.get("time") as string;
+    const generatedId = `BGC-${Math.floor(1000 + Math.random() * 9000)}`;
+    const generatedOtp = `${Math.floor(100000 + Math.random() * 900000)}`;
+
+    const bookingPayload = {
+      reservationNumber: generatedId,
+      otp: generatedOtp,
+      name,
+      email,
+      phone,
+      guests,
+      date,
+      time,
+      status: "confirmed",
+      createdAt: serverTimestamp(),
+    };
+
+    try {
+      await addDoc(collection(db, "bookings"), bookingPayload);
+      // Play audible reservation arrival chime
+      soundManager.playReservationAlert();
+    } catch (err) {
+      console.error("Error saving booking to Firestore:", err);
+    }
+
+    // Format text receipt according to database text specifications
+    const receiptText = formatBookingReceiptText({
+      ...bookingPayload,
+      createdAt: new Date().toISOString()
+    });
+
+    let driveLink = '';
+    let isDriveSynced = false;
+
+    // Check if Google Drive access token is available to sync immediately
+    const driveToken = getStoredDriveToken();
+    if (driveToken) {
+      try {
+        const driveResult = await syncSingleBookingToDrive(driveToken, bookingPayload);
+        driveLink = driveResult.webViewLink;
+        isDriveSynced = true;
+      } catch (driveErr) {
+        console.warn("Could not sync single booking directly to Google Drive:", driveErr);
+      }
+    }
+
+    setSuccessData({ 
+      reservationNumber: generatedId,
+      otp: generatedOtp,
+      receiptText,
+      driveLink,
+      isDriveSynced
+    });
+    form.reset();
+    setIsSubmitting(false);
+  };
+
+  const handleDownloadReceipt = () => {
+    if (!successData?.receiptText) return;
+    const blob = new Blob([successData.receiptText], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Booking_${successData.reservationNumber}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleCopyReceipt = () => {
+    if (!successData?.receiptText) return;
+    navigator.clipboard.writeText(successData.receiptText);
+    setCopiedReceipt(true);
+    setTimeout(() => setCopiedReceipt(false), 2000);
   };
 
   return (
@@ -90,6 +176,55 @@ export default function Booking() {
                 </div>
               </div>
 
+              {/* Google Drive Database Record Status */}
+              <div className="bg-[#171412] border border-[#e8a33d]/30 rounded-xl p-4 max-w-md mx-auto text-left space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <HardDrive className="w-4 h-4 text-[#e8a33d]" />
+                    <span className="text-xs font-semibold text-white">Google Drive Database Record</span>
+                  </div>
+                  {successData.isDriveSynced ? (
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
+                      Synced to Drive
+                    </span>
+                  ) : (
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#e8a33d]/10 text-[#e8a33d] border border-[#e8a33d]/20 font-medium">
+                      Text Format (.txt) Ready
+                    </span>
+                  )}
+                </div>
+                <p className="text-[11px] text-white/60 font-mono">
+                  Booking_{successData.reservationNumber}.txt (Formatted Database Document)
+                </p>
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    onClick={() => setShowReceiptModal(true)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#e8a33d]/15 hover:bg-[#e8a33d]/25 text-[#e8a33d] rounded-lg text-xs font-medium border border-[#e8a33d]/30 transition-colors"
+                  >
+                    <FileText className="w-3.5 h-3.5" />
+                    Read Record on Website
+                  </button>
+                  <button
+                    onClick={handleDownloadReceipt}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-white/80 rounded-lg text-xs font-medium border border-white/10 transition-colors"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    Download .txt
+                  </button>
+                  {successData.driveLink && (
+                    <a
+                      href={successData.driveLink}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-white/70 rounded-lg text-xs font-medium border border-white/10 transition-colors ml-auto"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5 text-[#e8a33d]" />
+                      Drive
+                    </a>
+                  )}
+                </div>
+              </div>
+
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
                 <Link
                   to={`/manage?id=${successData.reservationNumber}`}
@@ -97,9 +232,16 @@ export default function Booking() {
                 >
                   Manage & Pre-Order Dishes
                 </Link>
+                <Link
+                  to="/drive-records"
+                  className="px-6 py-3 rounded-full bg-white/10 text-white text-xs uppercase tracking-widest font-semibold hover:bg-white/20 transition-colors flex items-center gap-2"
+                >
+                  <HardDrive className="w-3.5 h-3.5 text-[#e8a33d]" />
+                  Browse Drive Database
+                </Link>
                 <button 
                   onClick={() => setSuccessData(null)}
-                  className="px-6 py-3 rounded-full bg-white/10 text-white text-xs uppercase tracking-widest font-semibold hover:bg-white/20 transition-colors"
+                  className="px-5 py-3 rounded-full bg-transparent text-white/50 text-xs uppercase tracking-widest font-semibold hover:text-white transition-colors"
                 >
                   Book Another Table
                 </button>
@@ -218,6 +360,72 @@ export default function Booking() {
           )}
         </AnimatePresence>
       </div>
+      {/* Google Drive Text Receipt Modal */}
+      <AnimatePresence>
+        {showReceiptModal && successData?.receiptText && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full max-w-2xl bg-[#12100e] border border-[#e8a33d]/30 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]"
+            >
+              <div className="px-6 py-4 bg-[#171412] border-b border-white/10 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-[#e8a33d]/10 border border-[#e8a33d]/30 flex items-center justify-center text-[#e8a33d]">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-mono font-medium text-sm">
+                      Booking_{successData.reservationNumber}.txt
+                    </h4>
+                    <p className="text-[11px] text-white/50">Google Drive Formatted Text Receipt</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleCopyReceipt}
+                    className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white text-xs border border-white/10 transition-colors flex items-center gap-1.5"
+                  >
+                    {copiedReceipt ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedReceipt ? 'Copied' : 'Copy'}</span>
+                  </button>
+                  <button
+                    onClick={handleDownloadReceipt}
+                    className="p-2 rounded-lg bg-[#e8a33d] hover:bg-[#f3b55c] text-black text-xs font-bold transition-colors flex items-center gap-1.5"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Download</span>
+                  </button>
+                  <button
+                    onClick={() => setShowReceiptModal(false)}
+                    className="p-2 text-white/50 hover:text-white transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-6 overflow-y-auto flex-1 font-mono text-xs text-white/90 leading-relaxed bg-[#0a0908]">
+                <pre className="whitespace-pre-wrap select-text selection:bg-[#e8a33d] selection:text-black">
+                  {successData.receiptText}
+                </pre>
+              </div>
+
+              <div className="px-6 py-3 bg-[#171412] border-t border-white/10 flex items-center justify-between text-xs text-white/50">
+                <span>Stored directly in The Bagichi Google Drive Database</span>
+                <button
+                  onClick={() => setShowReceiptModal(false)}
+                  className="px-4 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

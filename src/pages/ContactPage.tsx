@@ -1,4 +1,4 @@
-import { MapPin, Phone, Mail, Clock, Navigation, Calendar, ArrowLeft, Instagram, Facebook } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Navigation, Calendar, ArrowLeft, Image as ImageIcon, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageTransition from "../components/PageTransition";
 import Header from "../components/Header";
@@ -47,7 +47,7 @@ export default function ContactPage() {
                   <div className="flex flex-col items-center gap-3">
                     <MapPin className="w-5 h-5 text-[#e8a33d] flex-shrink-0" />
                     <div>
-                      <p className="text-sm text-white font-medium leading-relaxed">
+                      <p className="text-sm text-white font-medium leading-[2.2]">
                         NH248, Near Bhanpur Mode, Village Gunawata, Amer, Kukas, Rajasthan 302038
                       </p>
                       <a
@@ -100,7 +100,7 @@ export default function ContactPage() {
                       rel="noopener noreferrer"
                       className="p-2 rounded-lg bg-white/10 hover:bg-[#e8a33d] hover:text-black transition-colors"
                     >
-                      <Instagram className="w-4 h-4" />
+                      <ImageIcon className="w-4 h-4" />
                     </a>
                     <a
                       href="https://www.facebook.com/thebagichi"
@@ -108,7 +108,7 @@ export default function ContactPage() {
                       rel="noopener noreferrer"
                       className="p-2 rounded-lg bg-white/10 hover:bg-[#e8a33d] hover:text-black transition-colors"
                     >
-                      <Facebook className="w-4 h-4" />
+                      <Users className="w-4 h-4" />
                     </a>
                   </div>
                 </div>

@@ -1,4 +1,4 @@
-import { MapPin, Phone, Mail, Instagram, Facebook } from "lucide-react";
+import { MapPin, Phone, Mail, Image as ImageIcon, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
@@ -8,8 +8,19 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
           {/* Brand */}
           <div className="space-y-4 flex flex-col items-center text-center">
-            <h3 className="font-serif text-2xl font-bold text-white uppercase tracking-wider">THE BAGICHI</h3>
-            <p className="text-xs uppercase tracking-wider font-light leading-relaxed text-white/60">
+            <div className="flex flex-col items-center">
+              <img 
+                src="/instagram-logo.png" 
+                alt="The Bagichi Logo" 
+                className="w-12 h-12 rounded-full object-cover mb-3"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  target.style.display = 'none';
+                }}
+              />
+              <h3 className="font-serif text-2xl font-bold text-white uppercase tracking-wider">THE BAGICHI</h3>
+            </div>
+            <p className="text-xs uppercase tracking-wider font-light leading-[2.2] text-white/60">
               A highly-rated outdoor garden sanctuary for families and road-trippers on the Delhi-Jaipur highway.
             </p>
             <div className="flex justify-center gap-3 pt-1">
@@ -20,7 +31,7 @@ export default function Footer() {
                 className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#e8a33d] hover:text-black transition-all text-white/70"
                 aria-label="Instagram"
               >
-                <Instagram className="w-4 h-4" />
+                <ImageIcon className="w-4 h-4" />
               </a>
               <a 
                 href="https://www.facebook.com/thebagichi" 
@@ -29,7 +40,7 @@ export default function Footer() {
                 className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#e8a33d] hover:text-black transition-all text-white/70"
                 aria-label="Facebook"
               >
-                <Facebook className="w-4 h-4" />
+                <Users className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -66,7 +77,7 @@ export default function Footer() {
                   href="https://maps.app.goo.gl/uMgo4BpBVjxm4HrWA" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="text-xs leading-relaxed text-white/80 hover:text-[#e8a33d] transition-colors"
+                  className="text-xs leading-[2.2] text-white/80 hover:text-[#e8a33d] transition-colors"
                 >
                   NH248, Near Bhanpur Mode, Village Gunawata, Amer, Kukas, Rajasthan 302038
                 </a>
@@ -109,10 +120,11 @@ export default function Footer() {
 
         <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-[10px] uppercase tracking-widest text-white/40">
           <p>&copy; {new Date().getFullYear()} The Bagichi Garden Cafe & Restaurant. All rights reserved.</p>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <Link to="/" className="hover:text-white transition-colors">Privacy</Link>
-            <Link to="/" className="hover:text-white transition-colors">Terms</Link>
-            <Link to="/contact" className="hover:text-white transition-colors">Directions</Link>
+            <Link to="/kds" className="hover:text-[#e8a33d] transition-colors">Kitchen (KDS)</Link>
+            <Link to="/drive-records" className="hover:text-[#e8a33d] transition-colors">Drive Records</Link>
+            <Link to="/admin" className="hover:text-white transition-colors">Staff Login</Link>
           </div>
         </div>
       </div>

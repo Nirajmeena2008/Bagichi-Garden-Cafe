@@ -1,8 +1,9 @@
 {
   "name": "The Bagichi Garden Cafe & Restaurant",
-  "description": "Professional restaurant website with booking and menu features.",
+  "description": "A lush green sanctuary on the Delhi-Jaipur highway with online food ordering, Google Maps customer location assistance, Kitchen Order Ticket (KOT) system, table bookings, and admin order management.",
   "requestFramePermissions": [
-    "microphone"
+    "microphone",
+    "geolocation"
   ],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
