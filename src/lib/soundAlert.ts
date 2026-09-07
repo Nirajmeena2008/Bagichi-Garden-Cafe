@@ -7,6 +7,7 @@ class SoundAlertManager {
   private isMuted: boolean = false;
   private volume: number = 0.9;
   private customSoundUrl: string | null = null;
+  private lastOrderAlertTime: number = 0;
 
   constructor() {
     // Check localStorage for saved settings
@@ -82,6 +83,13 @@ class SoundAlertManager {
   public playOrderAlert() {
     if (this.isMuted) return;
 
+    // Prevent duplicate triggers within 2.5 seconds across concurrent listeners
+    const now = Date.now();
+    if (now - this.lastOrderAlertTime < 2500) {
+      return;
+    }
+    this.lastOrderAlertTime = now;
+
     // If a custom sound URL has been provided and is valid, play that audio
     if (this.customSoundUrl) {
       try {
@@ -98,6 +106,15 @@ class SoundAlertManager {
     }
 
     this.synthesizeOrderBell();
+  }
+
+  /**
+   * Manually test the kitchen order bell (bypassing debounce and unlocking audio context)
+   */
+  public testOrderAlert() {
+    this.lastOrderAlertTime = 0;
+    this.initAudioContext();
+    this.playOrderAlert();
   }
 
   /**

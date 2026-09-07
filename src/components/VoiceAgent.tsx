@@ -128,11 +128,10 @@ export default function VoiceAgent() {
           if (msg.action === 'order_created') {
             setConfirmedOrder(msg.data);
             try {
-              soundManager.playOrderAlert();
               localStorage.setItem('thebagichi_last_order_id', msg.data.id);
               localStorage.setItem('thebagichi_last_order_num', msg.data.orderNumber);
             } catch (e) {
-              console.warn("Storage/alert error", e);
+              console.warn("Storage error", e);
             }
             return;
           }

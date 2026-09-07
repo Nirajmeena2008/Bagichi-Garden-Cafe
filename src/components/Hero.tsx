@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Star } from "./icons";
 import { Utensils, Calendar, MapPin, MessageSquare, Sparkles, ShoppingBag } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { cafeConfig } from "../data/cafeConfig";
 import "../styles/Hero.css";
 
@@ -38,9 +38,12 @@ export default function Hero() {
     }
   }, []);
 
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 1000], [0, 300]);
+
   return (
     <section className="hero w-full" id="top">
-      <div className="hero__media" aria-hidden="true">
+      <motion.div className="hero__media" aria-hidden="true" style={{ y }}>
         <video 
           ref={videoRef} 
           className={`hero__video ${ready ? 'is-ready' : ''}`}
@@ -53,7 +56,7 @@ export default function Hero() {
           onCanPlay={() => setReady(true)} 
         />
         <div className="hero__scrim" />
-      </div>
+      </motion.div>
 
       <motion.div variants={container} initial="hidden" animate="show" className="hero__body shell text-center flex flex-col items-center">
         <motion.div variants={item} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md mb-8">

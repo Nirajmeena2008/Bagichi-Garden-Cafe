@@ -14,7 +14,6 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { ZomatoOrder, ZomatoOrderStatus, ZomatoOrderItem } from '../types';
-import { soundManager } from './soundAlert';
 import { saveKotPdfToGoogleDrive } from './kotPdfService';
 
 // The Bagichi Kitchen Display & Kitchen Order Ticket (KOT) Engine
@@ -267,9 +266,6 @@ export async function placeWebsiteOrder(params: {
   // Ensure all fields recursively are free of undefined before sending to Firestore
   const cleanOrderPayload = removeUndefined(newOrderData);
   const docRef = await addDoc(collection(db, 'zomatoOrders'), cleanOrderPayload);
-
-  // Play audio alert instantly
-  soundManager.playOrderAlert();
 
   const createdOrder: ZomatoOrder = {
     id: docRef.id,
@@ -593,9 +589,6 @@ export async function createSimulatedZomatoOrder(customOrder?: Partial<ZomatoOrd
 
   const cleanOrder = removeUndefined(newOrder);
   const docRef = await addDoc(collection(db, 'zomatoOrders'), cleanOrder);
-
-  // Sound notification
-  soundManager.playOrderAlert();
 
   const createdOrderObj: ZomatoOrder = {
     id: docRef.id,

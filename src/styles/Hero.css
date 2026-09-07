@@ -12,8 +12,9 @@
 }
 .hero__media {
   position: absolute;
-  inset: 0;
+  inset: -20% 0 -20% 0; /* Add extra room at top and bottom for parallax */
   z-index: -1;
+  overflow: hidden;
 }
 .hero__video {
   width: 100%;

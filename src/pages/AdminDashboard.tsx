@@ -59,7 +59,9 @@ import {
   HardDrive,
   FileText,
   ChefHat,
-  ShoppingBag
+  ShoppingBag,
+  Bell,
+  VolumeX
 } from 'lucide-react';
 import { parseSocialVideoUrl, SAMPLE_RESTAURANT_REELS } from '../lib/videoUtils';
 import { ReelComment, Review } from '../types';
@@ -254,9 +256,15 @@ export default function AdminDashboard() {
   const initialBookingsLoaded = useRef(false);
   const knownBookingIds = useRef<Set<string>>(new Set());
 
+  const initialOrdersLoaded = useRef(false);
+  const knownOrderIds = useRef<Set<string>>(new Set());
+
+  const [isSoundMuted, setIsSoundMuted] = useState(() => soundManager.getMuted());
+
   useEffect(() => {
     if (loading) return;
 
+    // Real-time listener for table bookings
     const qBookings = query(collection(db, 'bookings'), orderBy('createdAt', 'desc'));
     const unsubBookings = onSnapshot(qBookings, (snap) => {
       let hasNewBooking = false;
@@ -273,6 +281,35 @@ export default function AdminDashboard() {
       }
       initialBookingsLoaded.current = true;
       setBookings(fetchedBookings);
+    });
+
+    // Real-time listener for incoming customer orders (rings KOT bell on this admin device)
+    const qOrders = query(collection(db, 'zomatoOrders'), orderBy('createdAt', 'desc'));
+    const unsubOrders = onSnapshot(qOrders, (snap) => {
+      let hasNewOrder = false;
+      let latestOrderData: any = null;
+
+      snap.docs.forEach((d) => {
+        const orderData = d.data();
+        if (initialOrdersLoaded.current && !knownOrderIds.current.has(d.id)) {
+          hasNewOrder = true;
+          if (!latestOrderData) {
+            latestOrderData = { id: d.id, ...orderData };
+          }
+        }
+        knownOrderIds.current.add(d.id);
+      });
+
+      if (hasNewOrder) {
+        soundManager.playOrderAlert();
+        const orderNum = latestOrderData?.orderNumber || latestOrderData?.kotNumber || 'New';
+        const customer = latestOrderData?.customerName ? ` from ${latestOrderData.customerName}` : '';
+        const total = latestOrderData?.totalAmount ? ` (₹${latestOrderData.totalAmount})` : '';
+        showNotification(`🔔 Kitchen Alert: Incoming Order #${orderNum}${customer}${total} Received!`);
+      }
+      initialOrdersLoaded.current = true;
+    }, (err) => {
+      console.warn('[AdminDashboard] Orders listener error:', err);
     });
 
     const qMenu = query(collection(db, 'menuItems'), orderBy('category'));
@@ -312,6 +349,7 @@ export default function AdminDashboard() {
 
     return () => {
       unsubBookings();
+      unsubOrders();
       unsubMenu();
       unsubReels();
       unsubComments();
@@ -906,7 +944,36 @@ export default function AdminDashboard() {
             </div>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
+            {/* KOT Kitchen Bell Audio Indicator & Test Button */}
+            <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-lg p-1">
+              <button
+                onClick={() => {
+                  soundManager.testOrderAlert();
+                  showNotification('🔔 KOT Kitchen Bell tested on this admin device!');
+                }}
+                className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#e8a33d]/20 hover:bg-[#e8a33d]/30 text-[#e8a33d] text-xs font-semibold transition-colors"
+                title="Test KOT Bell on this device and unlock browser audio"
+              >
+                <Bell className="w-3.5 h-3.5 animate-bounce" />
+                <span className="hidden xs:inline">Test Bell</span>
+              </button>
+              <button
+                onClick={() => {
+                  const nextMute = !isSoundMuted;
+                  soundManager.setMuted(nextMute);
+                  setIsSoundMuted(nextMute);
+                  showNotification(nextMute ? '🔕 KOT Bell Muted' : '🔔 KOT Bell Unmuted');
+                }}
+                className={`p-1 rounded text-xs transition-colors ${
+                  isSoundMuted ? 'text-rose-400 hover:bg-rose-500/20' : 'text-emerald-400 hover:bg-emerald-500/20'
+                }`}
+                title={isSoundMuted ? 'Unmute KOT Bell' : 'Mute KOT Bell'}
+              >
+                {isSoundMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+              </button>
+            </div>
+
             <Link
               to="/kds"
               target="_blank"

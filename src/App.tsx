@@ -16,6 +16,7 @@ import DriveRecordsPage from "./pages/DriveRecordsPage";
 import KitchenDisplayPage from "./pages/KitchenDisplayPage";
 import OrderOnlinePage from "./pages/OrderOnlinePage";
 import OrderTrackingPage from "./pages/OrderTrackingPage";
+import AdminOrderAlertWatcher from "./components/AdminOrderAlertWatcher";
 
 function GlobalBackButton() {
   const location = useLocation();
@@ -70,6 +71,7 @@ export default function App() {
       <CursorParticles />
       <GlobalBackButton />
       <AnimatedRoutes />
+      <AdminOrderAlertWatcher />
       <VoiceAgent />
     </BrowserRouter>
   );

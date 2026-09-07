@@ -6,7 +6,6 @@ import { ZomatoOrder, OrderStatus } from "../types";
 import { getOrderById, searchOrders, printKotTicket } from "../lib/zomatoService";
 import { downloadKotPdfLocally, saveKotPdfToGoogleDrive } from "../lib/kotPdfService";
 import { getStoredDriveToken, initiateDriveAuth } from "../lib/googleDrive";
-import { soundManager } from "../lib/soundAlert";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import PageTransition from "../components/PageTransition";
@@ -88,10 +87,7 @@ export default function OrderTrackingPage() {
           const data = { id: docSnap.id, ...(docSnap.data() as any) } as ZomatoOrder;
           setOrder(data);
 
-          // If status upgraded in real time, play celebratory alert
-          if (prevStatusRef.current && prevStatusRef.current !== data.status) {
-            soundManager.playOrderAlert();
-          }
+          // Update status reference
           prevStatusRef.current = data.status;
         } else {
           setOrder(null);

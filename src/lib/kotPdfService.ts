@@ -9,6 +9,7 @@ import {
 } from "./googleDrive";
 import { db } from "./firebase";
 import { doc, updateDoc } from "firebase/firestore";
+import { cafeConfig } from "../data/cafeConfig";
 
 /**
  * Generate a professional 80mm Kitchen Order Ticket (KOT) PDF
@@ -239,7 +240,7 @@ export function generateKotPdf(order: RestaurantOrder): { doc: jsPDF; blob: Blob
   doc.text("Saved in Google Drive: folder /kot", pageWidth / 2, y, { align: "center" });
 
   y += 3.2;
-  doc.text("The Bagichi Cloud Kitchen Display & POS System", pageWidth / 2, y, { align: "center" });
+  doc.text(`${cafeConfig.name} Kitchen Display & POS System`, pageWidth / 2, y, { align: "center" });
 
   const fileName = `KOT_${order.kotNumber || 'TICKET'}_${order.orderNumber}.pdf`;
   const blob = doc.output("blob");
